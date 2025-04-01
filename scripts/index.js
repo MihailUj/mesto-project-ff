@@ -11,18 +11,25 @@
 
 const content = document.querySelector('.content');
 const placesList = content.querySelector('.places__list');
+const cardTemplate = document.querySelector('#card-template').content;
 
-function addCard(card, deleteCard){
-  const cardTemplate = document.querySelector('#card-template').content;
+function createCard(card, deleteCard){
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
-  cardElement.querySelector('.card__image').src = card.link;
+  const cardImage = cardElement.querySelector('.card__image');
+  cardImage.src = card.link;
+  cardImage.alt = card.name;
   cardElement.querySelector('.card__title').textContent = card.name;
   cardElement.querySelector('.card__delete-button').addEventListener('click', deleteCard);
+  return cardElement;
+}
+
+function addCard(card){
+  const cardElement = createCard(card, deleteCard);
   placesList.append(cardElement);
 }
 
 function deleteCard(event){
-  event.target.parentElement.remove();
+  event.target.closest('.places__item').remove();
 }
 
-initialCards.forEach((item) => addCard(item,deleteCard));
+initialCards.forEach(addCard);
