@@ -1,8 +1,8 @@
 import './pages/index.css';
 
-import {openPopup, closePopup} from './scripts/modal.js'
-import {initialCards} from './scripts/cards.js'
-import {handleDeleteCard, handleCardLike, createCard} from './scripts/card.js'
+import {openPopup, closePopup} from './scripts/modal.js';
+import {initialCards} from './scripts/cards.js';
+import {handleDeleteCard, handleCardLike, createCard} from './scripts/card.js';
 
 const content = document.querySelector('.content');
 const placesList = content.querySelector('.places__list');
