@@ -3,6 +3,16 @@ import './pages/index.css';
 import {openPopup, closePopup} from './scripts/modal.js';
 import {initialCards} from './scripts/cards.js';
 import {handleDeleteCard, handleCardLike, createCard} from './scripts/card.js';
+import {enableValidation, clearValidation} from './scripts/validation.js';
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
+};
 
 const content = document.querySelector('.content');
 const placesList = content.querySelector('.places__list');
@@ -23,6 +33,8 @@ const caption = popupImage.querySelector('.popup__caption');
 const profileForm = document.forms.edit_profile;
 const newCardForm = document.forms.new_place;
 
+enableValidation(validationConfig);
+
 profileEditButton.addEventListener('click', handlePopupProfileEdit);
 
 profileAddButton.addEventListener('click', function (evt) {
@@ -36,6 +48,7 @@ newCardForm.addEventListener('submit', handleNewCardFormSubmit);
 function handlePopupProfileEdit(evt) {
   profileForm.name.value = profileTitle.textContent;
   profileForm.description.value = profileDescription.textContent;
+  clearValidation(profileForm, validationConfig);
   openPopup(popupProfileEdit);
 };
 
@@ -54,6 +67,7 @@ function handleNewCardFormSubmit(evt) {
   };
   addCard(card);
   closePopup(popupNewCard);
+  clearValidation(newCardForm, validationConfig);
   newCardForm.reset();
 };
 
@@ -70,3 +84,4 @@ function addCard(card){
 };
 
 initialCards.forEach(addCard);
+

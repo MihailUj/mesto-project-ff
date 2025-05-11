@@ -20,3 +20,19 @@
     line-height: 15px;
   }
 }
+
+.popup__input_type_error {
+  border-bottom-color: red;
+} 
+
+.popup__input-error {
+  display: block;
+  color: transparent;
+  font-size: 12px;
+  font-weight: 400;
+  min-block-size: 2rem;
+}
+
+.popup__input-error_active {
+  color: red;
+}
