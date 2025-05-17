@@ -1,12 +1,4 @@
 let settings;
-/*Список параметров объекта settings:
-    formSelector: '.popup__form',+
-    inputSelector: '.popup__input',+
-    submitButtonSelector: '.popup__button',+
-    inactiveButtonClass: 'popup__button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error_active'
-  */
 
 const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -53,6 +45,7 @@ export const enableValidation = (validationConfig) => {
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
+      toggleButtonText(formElement);
     });
     setEventListeners(formElement);
   });
@@ -81,3 +74,10 @@ export const clearValidation = (formElement, validationConfig) => {
   });
   buttonElement.classList.add(validationConfig.inactiveButtonClass);
 };
+
+export const toggleButtonText = (formElement) => {
+  const submitButton = formElement.querySelector(settings.submitButtonSelector);
+  const text = submitButton.textContent; 
+  submitButton.textContent = submitButton.dataset.sendText;
+  submitButton.dataset.sendText = text;
+}
