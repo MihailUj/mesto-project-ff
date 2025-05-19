@@ -1,3 +1,5 @@
+import {checkResponse} from'../utils/utils.js'
+
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-38',
   headers: {
@@ -7,132 +9,55 @@ const config = {
 }
 
 export const getInitialCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-      headers: config.headers
-    })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-    console.log(err);
-  });
+  return request('/cards', {});
 };
 
 export const getCurrentUser = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    headers: config.headers
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-    console.log(err);
-  });
+  return request('/users/me', {});
 };
 
 export const updateUserData = (userData) => {
-  return fetch(`${config.baseUrl}/users/me`, {
+  return request('/users/me', {
     method: 'PATCH',
-    headers: config.headers,
     body: JSON.stringify(userData)
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-    console.log(err);
   });
 };
 
 export const postCard = (cardData) => {
-  return fetch(`${config.baseUrl}/cards `, {
+  return request('/cards', {
     method: 'POST',
-    headers: config.headers,
     body: JSON.stringify(cardData)
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-    console.log(err);
   });
 };
 
 export const deleteCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-    console.log(err);
+  return request(`/cards/${cardId}`, {
+    method: 'DELETE'
   });
 };
 
 export const likeCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+  return request(`/cards/likes/${cardId}`, {
     method: 'PUT',
-    headers: config.headers
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-    console.log(err);
   });
 }
 
 export const dislikeCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+  return request(`/cards/likes/${cardId}`, {
     method: 'DELETE',
-    headers: config.headers
-  })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
   });
 }
 
 export const updateAvatar = (imageUrl) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
+  return request('/users/me/avatar', {
     method: 'PATCH',
-    headers: config.headers,
     body: JSON.stringify({
           'avatar': imageUrl
     })
-  })
-    .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-    .catch((err) => {
-      console.log(err);
   });
+}
+
+function request(url, options) {
+    options.headers = config.headers;
+    return fetch(config.baseUrl+url, options).then(checkResponse)
 }

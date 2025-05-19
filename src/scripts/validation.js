@@ -45,7 +45,6 @@ export const enableValidation = (validationConfig) => {
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', function (evt) {
       evt.preventDefault();
-      toggleButtonText(formElement);
     });
     setEventListeners(formElement);
   });
@@ -59,25 +58,24 @@ const hasInvalidInput = (inputList) => {
 
 const toggleButtonState = (inputList, buttonElement) => {
   if (hasInvalidInput(inputList)){
+    buttonElement.disabled = true;
     buttonElement.classList.add(settings.inactiveButtonClass);
   }
   else {
-    buttonElement.classList.remove(settings.inactiveButtonClass);
+    disableButton(buttonElement)
   }
 }
 
-export const clearValidation = (formElement, validationConfig) => {
-  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
-  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+export const clearValidation = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll(settings.inputSelector));
+  const buttonElement = formElement.querySelector(settings.submitButtonSelector);
   inputList.forEach((inputElement) => {
-    checkInputValidity(formElement, inputElement);
+    hideInputError(formElement, inputElement)
   });
-  buttonElement.classList.add(validationConfig.inactiveButtonClass);
+  disableButton(buttonElement)
 };
 
-export const toggleButtonText = (formElement) => {
-  const submitButton = formElement.querySelector(settings.submitButtonSelector);
-  const text = submitButton.textContent; 
-  submitButton.textContent = submitButton.dataset.sendText;
-  submitButton.dataset.sendText = text;
+const disableButton = (buttonElement) => {
+  buttonElement.disabled = false;
+  buttonElement.classList.remove(settings.inactiveButtonClass);
 }
